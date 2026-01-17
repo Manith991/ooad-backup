@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="CategoriesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Components\FoodCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Components\TableCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DiningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormResetPass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormEditCate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormAddProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormAddTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDetailRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormEditStaff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormNewPass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="HomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="POSForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="RecordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StaffForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
