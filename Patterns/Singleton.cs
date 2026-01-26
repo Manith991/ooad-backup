@@ -62,9 +62,6 @@ namespace OOAD_Project.Patterns
                 // Get the application directory
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                // ❌ REMOVE THIS - Don't hardcode paths!
-                // string configPath = Path.Combine(baseDirectory, "D:\\RUPP\\OOAD\\OOAD_Project\\OOAD_Project\\appsettings.json");
-
                 // ✅ CORRECT - Use relative path
                 string configPath = Path.Combine(baseDirectory, "appsettings.json");
 

@@ -22,9 +22,6 @@ namespace OOAD_Project
             lblRole.Text = currentRole;
         }
 
-        /// <summary>
-        /// Add controls to center panel (existing method)
-        /// </summary>
         public void AddControls(Form f)
         {
             panelCenter.Controls.Clear();
@@ -38,7 +35,6 @@ namespace OOAD_Project
         // FACTORY PATTERN IMPLEMENTATION
         // All button clicks now use FormFactoryManager
         // ============================================
-
         private void btnHome_Click(object sender, EventArgs e)
         {
             // ✅ Using Factory Pattern
@@ -102,53 +98,6 @@ namespace OOAD_Project
             Form posForm = factory.CreateForm();
             posForm.Show();
         }
-
-        // ============================================
-        // ALTERNATIVE: Using FormFactoryManager (simpler)
-        // You can replace the above methods with these:
-        // ============================================
-
-        /*
-        private void btnHome_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateHomeForm());
-        }
-        
-        private void btnStaff_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateStaffForm(currentRole));
-        }
-        
-        private void btnProduct_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateProductForm(currentRole));
-        }
-        
-        private void btnCategory_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateCategoriesForm(currentRole));
-        }
-        
-        private void btnTable_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateTableForm(currentRole));
-        }
-        
-        private void btnRecord_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateRecordForm(currentRole));
-        }
-        
-        private void btnHere_Click(object sender, EventArgs e)
-        {
-            AddControls(FormFactoryManager.CreateDiningForm(currentUser));
-        }
-        
-        private void btnAway_Click(object sender, EventArgs e)
-        {
-            FormFactoryManager.CreatePOSForm(this, currentUser, "Takeaway").Show();
-        }
-        */
 
         private void btnLogout_Click(object sender, EventArgs e)
         {

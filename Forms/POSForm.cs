@@ -246,6 +246,10 @@ namespace OOAD_Project
                 dgvItems.Rows[i].Cells["no"].Value = (i + 1).ToString();
         }
 
+        // ============================================
+        // UPDATED: FoodCard_OnSelect - Now uses Decorator Pattern
+        // ============================================
+
         private void FoodCard_OnSelect(object? sender, EventArgs e)
         {
             if (sender is not FoodCard card) return;
@@ -253,44 +257,158 @@ namespace OOAD_Project
             int productId = GetProductIdByName(card.Title);
             if (productId == -1)
             {
-                MessageBox.Show("Product not found in database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Product not found in database.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Check if item exists in DataGridView
+            // ✅ DECORATOR PATTERN: Show customization dialog
+            using (var customDialog = new FormProductCustomization(
+                productId,
+                card.Title,
+                (decimal)card.Price,
+                "Main Dish"))
+            {
+                if (customDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the decorated product
+                    IProduct customizedProduct = customDialog.CustomizedProduct;
+
+                    string itemName = customizedProduct.GetDescription();
+                    decimal itemPrice = customizedProduct.GetPrice();
+
+                    // Check if this EXACT customization already exists in the cart
+                    DataGridViewRow? existingRow = dgvItems.Rows.Cast<DataGridViewRow>()
+                        .FirstOrDefault(r => r.Cells["item"].Value?.ToString() == itemName);
+
+                    if (existingRow != null)
+                    {
+                        // Same customization exists - just increase quantity
+                        int qty = Convert.ToInt32(existingRow.Cells["quantity"].Value) + 1;
+                        existingRow.Cells["quantity"].Value = qty;
+                        existingRow.Cells["total"].Value = (double)(qty * itemPrice);
+
+                        UpdateOrderDetail(productId, qty, (double)itemPrice);
+                    }
+                    else
+                    {
+                        // New customization - add as new row
+                        int rowIdx = dgvItems.Rows.Add();
+                        var newRow = dgvItems.Rows[rowIdx];
+                        newRow.Cells["item"].Value = itemName;
+                        newRow.Cells["price"].Value = (double)itemPrice;
+                        newRow.Cells["quantity"].Value = 1;
+                        newRow.Cells["total"].Value = (double)itemPrice;
+
+                        InsertOrderDetail(productId, 1, (double)itemPrice);
+                    }
+
+                    UpdateRowNumbers();
+                    UpdateGrandTotal();
+                    UpdateOrderTotal();
+                }
+                // If DialogResult.Cancel, do nothing (user cancelled customization)
+            }
+        }
+
+        // ============================================
+        // ALTERNATIVE: Quick Add (Hold Shift to Skip Customization)
+        // ============================================
+
+        private void FoodCard_OnSelect_Alternative(object? sender, EventArgs e)
+        {
+            if (sender is not FoodCard card) return;
+
+            int productId = GetProductIdByName(card.Title);
+            if (productId == -1)
+            {
+                MessageBox.Show("Product not found in database.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // ✅ Hold SHIFT to quick-add without customization
+            bool quickAdd = (ModifierKeys & Keys.Shift) == Keys.Shift;
+
+            if (quickAdd)
+            {
+                // Quick add - no customization
+                AddProductQuickly(card.Title, card.Price, productId);
+            }
+            else
+            {
+                // Show customization dialog (Decorator Pattern)
+                using (var customDialog = new FormProductCustomization(
+                    productId, card.Title, (decimal)card.Price, "Main Dish"))
+                {
+                    if (customDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        IProduct customizedProduct = customDialog.CustomizedProduct;
+
+                        string itemName = customizedProduct.GetDescription();
+                        decimal itemPrice = customizedProduct.GetPrice();
+
+                        AddCustomizedProductToCart(itemName, (double)itemPrice, productId);
+                    }
+                }
+            }
+        }
+
+        private void AddProductQuickly(string name, double price, int productId)
+        {
             DataGridViewRow? existingRow = dgvItems.Rows.Cast<DataGridViewRow>()
-                .FirstOrDefault(r => r.Cells["item"].Value?.ToString() == card.Title);
+                .FirstOrDefault(r => r.Cells["item"].Value?.ToString() == name);
 
             if (existingRow != null)
             {
                 int qty = Convert.ToInt32(existingRow.Cells["quantity"].Value) + 1;
                 existingRow.Cells["quantity"].Value = qty;
-                existingRow.Cells["total"].Value = qty * card.Price;
-                UpdateOrderDetail(productId, qty, card.Price); // ✅ Update DB
+                existingRow.Cells["total"].Value = qty * price;
+                UpdateOrderDetail(productId, qty, price);
             }
             else
             {
                 int rowIdx = dgvItems.Rows.Add();
                 var newRow = dgvItems.Rows[rowIdx];
-                newRow.Cells["item"].Value = card.Title;
-                newRow.Cells["price"].Value = card.Price;
+                newRow.Cells["item"].Value = name;
+                newRow.Cells["price"].Value = price;
                 newRow.Cells["quantity"].Value = 1;
-                newRow.Cells["total"].Value = card.Price;
-                InsertOrderDetail(productId, 1, card.Price); // ✅ Insert DB
+                newRow.Cells["total"].Value = price;
+                InsertOrderDetail(productId, 1, price);
             }
+
             UpdateRowNumbers();
             UpdateGrandTotal();
             UpdateOrderTotal();
         }
 
-        //private void UpdateGrandTotal()
-        //{
-        //    double sum = dgvItems.Rows.Cast<DataGridViewRow>()
-        //        .Where(r => r.Cells["total"].Value != null)
-        //        .Sum(r => Convert.ToDouble(r.Cells["total"].Value));
+        private void AddCustomizedProductToCart(string itemName, double itemPrice, int productId)
+        {
+            DataGridViewRow? existingRow = dgvItems.Rows.Cast<DataGridViewRow>()
+                .FirstOrDefault(r => r.Cells["item"].Value?.ToString() == itemName);
 
-        //    lbTotalPrice.Text = sum.ToString("C2");
-        //}
+            if (existingRow != null)
+            {
+                int qty = Convert.ToInt32(existingRow.Cells["quantity"].Value) + 1;
+                existingRow.Cells["quantity"].Value = qty;
+                existingRow.Cells["total"].Value = qty * itemPrice;
+                UpdateOrderDetail(productId, qty, itemPrice);
+            }
+            else
+            {
+                int rowIdx = dgvItems.Rows.Add();
+                var newRow = dgvItems.Rows[rowIdx];
+                newRow.Cells["item"].Value = itemName;
+                newRow.Cells["price"].Value = itemPrice;
+                newRow.Cells["quantity"].Value = 1;
+                newRow.Cells["total"].Value = itemPrice;
+                InsertOrderDetail(productId, 1, itemPrice);
+            }
+
+            UpdateRowNumbers();
+            UpdateGrandTotal();
+            UpdateOrderTotal();
+        }
 
         private void dgvItems_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -475,160 +593,7 @@ namespace OOAD_Project
             }
         }
 
-        // ============================================
-        // DEMONSTRATION: Using Decorator Pattern
-        // ============================================
 
-        /// <summary>
-        /// Example of using Decorator Pattern for product customization
-        /// Call this when adding a product with modifications
-        /// </summary>
-        private void AddProductWithDecorators(string productName, double basePrice,
-            bool extraCheese, bool largeSizeselect, bool applyDiscount)
-        {
-            // Create base product
-            int productId = GetProductIdByName(productName);
-            if (productId == -1) return;
-
-            IProduct product = new BaseProduct(
-                productId,
-                productName,
-                (decimal)basePrice,
-                "Main Dish"
-            );
-
-            // ✅ Apply decorators based on customer choices
-            if (extraCheese)
-            {
-                product = new ExtraCheeseDecorator(product);
-            }
-
-            if (largeSizeselect)
-            {
-                product = new LargeSizeDecorator(product);
-            }
-
-            if (applyDiscount)
-            {
-                product = new DiscountDecorator(product, 10, "Happy Hour");
-            }
-
-            // Add tax
-            product = new TaxDecorator(product);
-
-            // Get final price and description
-            decimal finalPrice = product.GetPrice();
-            string description = product.GetDescription();
-
-            // Add to DataGridView
-            int rowIdx = dgvItems.Rows.Add();
-            var newRow = dgvItems.Rows[rowIdx];
-            newRow.Cells["item"].Value = description;
-            newRow.Cells["price"].Value = (double)finalPrice;
-            newRow.Cells["quantity"].Value = 1;
-            newRow.Cells["total"].Value = (double)finalPrice;
-
-            UpdateRowNumbers();
-            UpdateGrandTotal();
-        }
-
-        // ============================================
-        // ALTERNATIVE: Using ProductBuilder (Simpler)
-        // ============================================
-
-        private void AddCustomizedProduct_Example()
-        {
-            // Example: Burger with extras
-            IProduct burger = new BaseProduct(1, "Classic Burger", 5.99m, "Main Dish");
-
-            // ✅ Use builder for cleaner syntax
-            IProduct customBurger = new ProductBuilder(burger)
-                .AddExtraCheese()
-                .AddTopping("Bacon", 1.50m)
-                .MakeLarge()
-                .ApplyDiscount(10, "Student Discount")
-                .AddTax()
-                .Build();
-
-            // Result: Classic Burger + Extra Cheese + Bacon + (Large) (10% OFF - Student Discount) (incl. 10% tax)
-            string finalDescription = customBurger.GetDescription();
-            decimal finalPrice = customBurger.GetPrice();
-
-            MessageBox.Show($"{finalDescription}\nPrice: ${finalPrice:F2}");
-        }
-
-        private void ShowQRPayment(double total)
-        {
-            string qrContent = $"PAYMENT|Method=QR|Amount={total:F2}|Date={DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-
-            using var qrGen = new QRCodeGenerator();
-            using var qrData = qrGen.CreateQrCode(qrContent, QRCodeGenerator.ECCLevel.Q);
-            using var qrCode = new QRCode(qrData);
-            Bitmap qrImage = qrCode.GetGraphic(30);
-
-            Form qrForm = new Form
-            {
-                StartPosition = FormStartPosition.CenterScreen,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = "Scan to Pay (QR)",
-                ClientSize = new Size(600, 650)
-            };
-
-            PictureBox pb = new PictureBox { Dock = DockStyle.Fill, Image = qrImage, SizeMode = PictureBoxSizeMode.Zoom };
-            Button btnConfirm = new Button
-            {
-                Text = "Confirm Payment",
-                Dock = DockStyle.Bottom,
-                Height = 50,
-                BackColor = Color.FromArgb(0, 123, 255),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
-            };
-
-            btnConfirm.Click += (s, e) =>
-            {
-                qrForm.Close();
-                CompletePayment(total, "QR");
-            };
-
-            qrForm.Controls.Add(pb);
-            qrForm.Controls.Add(btnConfirm);
-            qrForm.ShowDialog();
-        }
-
-        private void CompletePayment(double total, string method)
-        {
-            try
-            {
-                int userId = GetUserIdByUsername(currentUser);
-                if (userId == -1) return;
-
-                using var conn = Database.GetConnection();
-                conn.Open();
-                using var tx = conn.BeginTransaction();
-
-                if (orderId.HasValue)
-                {
-                    UpdateExistingOrder(conn, tx, total, method);
-                    if (tableId.HasValue) UpdateTableStatus(conn, tx, tableId.Value, "Available");
-                }
-                else
-                {
-                    InsertNewOrder(conn, tx, userId, total, method);
-                }
-
-                tx.Commit();
-
-                MessageBox.Show($"{method} Payment successful.", "Paid", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dgvItems.Rows.Clear();
-                UpdateGrandTotal();
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{method} Payment error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         private void UpdateExistingOrder(NpgsqlConnection conn, NpgsqlTransaction tx, double total, string method)
         {
