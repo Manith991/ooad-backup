@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Compile Update="CategoriesForm.cs">
+    <Compile Update="Forms\CategoriesForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Components\FoodCard.cs">
@@ -10,55 +10,55 @@
     <Compile Update="Components\TableCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="DiningForm.cs">
+    <Compile Update="Forms\DiningForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormResetPass.cs">
+    <Compile Update="Forms\FormResetPass.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormEditCate.cs">
+    <Compile Update="Forms\FormEditCate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormAddProduct.cs">
+    <Compile Update="Forms\FormAddProduct.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormAddTable.cs">
+    <Compile Update="Forms\FormAddTable.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormDetailRecord.cs">
+    <Compile Update="Forms\FormDetailRecord.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormEditStaff.cs">
+    <Compile Update="Forms\FormEditStaff.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormNewPass.cs">
+    <Compile Update="Forms\FormNewPass.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="HomeForm.cs">
+    <Compile Update="Forms\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="LoginForm.cs">
+    <Compile Update="Forms\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="MenuForm.cs">
+    <Compile Update="Forms\MenuForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="POSForm.cs">
+    <Compile Update="Forms\POSForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="ProductForm.cs">
+    <Compile Update="Forms\ProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="RecordForm.cs">
+    <Compile Update="Forms\RecordForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="RegisterForm.cs">
+    <Compile Update="Forms\RegisterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="StaffForm.cs">
+    <Compile Update="Forms\StaffForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="TableForm.cs">
+    <Compile Update="Forms\TableForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
