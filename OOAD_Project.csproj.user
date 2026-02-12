@@ -13,6 +13,9 @@
     <Compile Update="Forms\DiningForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\FormEditStaff.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\FormProductCustomization.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -29,9 +32,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\FormDetailRecord.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormEditStaff.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\FormNewPass.cs">
@@ -52,6 +52,9 @@
     <Compile Update="Forms\ProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Patterns\TemplateMethod\BaseCrudForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\RecordForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +65,21 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\TableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Refactored\CategoriesFormRefactored.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Refactored\ProductFormRefactored.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Refactored\RecordFormRefactored.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Refactored\StaffFormRefactored.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Refactored\TableFormRefactored.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

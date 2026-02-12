@@ -19,7 +19,7 @@ namespace OOAD_Project
 
         [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
+         
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
         #endregion
@@ -864,9 +864,9 @@ namespace OOAD_Project
             int i = 0;
             var buttons = new[]
             {
-        btnAllFood, btnMainDish, btnAppetizer, btnSideDish,
-        btnSoup, btnSeafood, btnBeverage, btnDessert
-    };
+                btnAllFood, btnMainDish, btnAppetizer, btnSideDish,
+                btnSoup, btnSeafood, btnBeverage, btnDessert
+            };
 
             foreach (DataRow row in dt.Rows)
             {
@@ -875,7 +875,7 @@ namespace OOAD_Project
                 int id = Convert.ToInt32(row["categoryid"]);
                 string name = row["categoryname"].ToString();
 
-                buttons[i].Tag = id;        // ✅ use categoryid instead of name
+                buttons[i].Tag = id;
                 buttons[i].Text = name;
                 i++;
             }
@@ -915,9 +915,9 @@ namespace OOAD_Project
         {
             using (var form = new CategoriesForm("(admin)"))
             {
-                if (form.ShowDialog() == DialogResult.OK)   // Only executes if CategoriesForm sets DialogResult = OK
+                if (form.ShowDialog() == DialogResult.OK)   
                 {
-                    RefreshCategoryButtons();               // Refresh buttons now that category was updated
+                    RefreshCategoryButtons();          
                 }
             }
 

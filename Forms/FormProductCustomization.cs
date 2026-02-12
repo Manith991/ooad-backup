@@ -1,17 +1,7 @@
 ﻿using OOAD_Project.Patterns;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using static System.Windows.Forms.Design.AxImporter;
 
 namespace OOAD_Project
 {
-    /// <summary>
-    /// Category-Aware Product Customization Dialog
-    /// Shows different customization options based on product category
-    /// IMPROVED PREVIEW SECTION - Better space utilization
-    /// </summary>
     public partial class FormProductCustomization : Form
     {
         private IProduct _product;
@@ -57,7 +47,7 @@ namespace OOAD_Project
         {
             // Form settings
             this.Text = "Customize Your Order";
-            this.Width = 555;
+            this.Width = 560;
             this.Height = 850;
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -111,18 +101,13 @@ namespace OOAD_Project
                 BorderStyle = BorderStyle.FixedSingle
             };
             this.Controls.Add(mainPanel);
-            yPos += 440;
+            yPos += 440; //2nd total price padding
 
-            // ========================================
-            // ✅ IMPROVED PREVIEW SECTION
-            // ========================================
-
-            // Preview Panel with border for better visual separation
             var previewPanel = new Panel
             {
                 Location = new Point(20, yPos),
                 Width = 490,
-                Height = 110,
+                Height = 120, // total price box
                 BorderStyle = BorderStyle.FixedSingle,
                 BackColor = Color.FromArgb(250, 250, 250)
             };
@@ -165,9 +150,6 @@ namespace OOAD_Project
 
             yPos += 120;
 
-            // ========================================
-            // ✅ BUTTONS - Side by side with better spacing
-            // ========================================
             btnAdd = new Button
             {
                 Text = "Add to Order",
@@ -209,10 +191,6 @@ namespace OOAD_Project
             this.Controls.Add(bottomSpacer);
         }
 
-        /// <summary>
-        /// ✅ CATEGORY-AWARE CUSTOMIZATION
-        /// Different options for different food categories
-        /// </summary>
         private void LoadCategorySpecificOptions()
         {
             int yPos = 10;
@@ -273,9 +251,6 @@ namespace OOAD_Project
             yPos = AddDiscountOptions(yPos);
         }
 
-        // ========================================
-        // MAIN DISHES: Full customization
-        // ========================================
         private int AddMainDishOptions(int yPos)
         {
             // Protein options
@@ -302,9 +277,6 @@ namespace OOAD_Project
             return yPos;
         }
 
-        // ========================================
-        // APPETIZERS: Light customization
-        // ========================================
         private int AddAppetizerOptions(int yPos)
         {
             // Dipping sauces
@@ -325,9 +297,6 @@ namespace OOAD_Project
             return yPos;
         }
 
-        // ========================================
-        // SIDE DISHES: Size only
-        // ========================================
         private int AddSideDishOptions(int yPos)
         {
             // Size options
@@ -344,9 +313,6 @@ namespace OOAD_Project
             return yPos;
         }
 
-        // ========================================
-        // SOUPS/SALADS: Temperature & Dressing
-        // ========================================
         private int AddSoupSaladOptions(int yPos)
         {
             // Temperature for soup
@@ -384,9 +350,6 @@ namespace OOAD_Project
             return yPos;
         }
 
-        // ========================================
-        // BEVERAGES: Size, Temperature, Sweetness
-        // ========================================
         private int AddBeverageOptions(int yPos)
         {
             // Size
@@ -430,9 +393,6 @@ namespace OOAD_Project
             return yPos;
         }
 
-        // ========================================
-        // DESSERTS: Toppings & Size
-        // ========================================
         private int AddDessertOptions(int yPos)
         {
             // Toppings
@@ -598,10 +558,6 @@ namespace OOAD_Project
             UpdatePreview();
         }
 
-        /// <summary>
-        /// ✅ DECORATOR PATTERN IN ACTION
-        /// Applies decorators based on user selections
-        /// </summary>
         private void UpdatePreview()
         {
             // Start fresh

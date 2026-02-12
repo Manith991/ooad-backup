@@ -1,10 +1,4 @@
-﻿using Npgsql;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-
-namespace OOAD_Project
+﻿namespace OOAD_Project
 {
     public partial class FormEditCate : Form
     {
