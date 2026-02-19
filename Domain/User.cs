@@ -9,8 +9,18 @@
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = "employee";
         public string Status { get; set; } = "active";
-        public string? Image { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        private string? _imagePath;
+        public string? Image
+        {
+            get => _imagePath;
+            set => _imagePath = value;
+        }
+        public string? ImagePath
+        {
+            get => _imagePath;
+            set => _imagePath = value;
+        }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using Npgsql;
-using System;
 using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
 
 namespace OOAD_Project
 {

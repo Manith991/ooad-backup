@@ -28,12 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "RecordFormRefactored";
+            dgvRecord = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvRecord).BeginInit();
+            SuspendLayout();
+            // 
+            // dgvRecord
+            // 
+            dgvRecord.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRecord.Location = new Point(257, 120);
+            dgvRecord.Name = "dgvRecord";
+            dgvRecord.RowHeadersWidth = 62;
+            dgvRecord.Size = new Size(360, 225);
+            dgvRecord.TabIndex = 0;
+            // 
+            // RecordFormRefactored
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(dgvRecord);
+            Name = "RecordFormRefactored";
+            Text = "RecordFormRefactored";
+            ((System.ComponentModel.ISupportInitialize)dgvRecord).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private DataGridView dgvRecord;
     }
 }

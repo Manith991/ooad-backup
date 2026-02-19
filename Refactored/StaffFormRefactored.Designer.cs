@@ -28,12 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "StaffFormRefactored";
+            dgvStaff = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvStaff).BeginInit();
+            SuspendLayout();
+            // 
+            // dgvStaff
+            // 
+            dgvStaff.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStaff.Location = new Point(239, 107);
+            dgvStaff.Name = "dgvStaff";
+            dgvStaff.RowHeadersWidth = 62;
+            dgvStaff.Size = new Size(360, 225);
+            dgvStaff.TabIndex = 0;
+            // 
+            // StaffFormRefactored
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(dgvStaff);
+            Name = "StaffFormRefactored";
+            Text = "StaffFormRefactored";
+            ((System.ComponentModel.ISupportInitialize)dgvStaff).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private DataGridView dgvStaff;
     }
 }

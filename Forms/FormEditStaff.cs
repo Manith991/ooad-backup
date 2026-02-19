@@ -1,16 +1,18 @@
-﻿using System;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using Npgsql;
+﻿using Npgsql;
 
 namespace OOAD_Project
 {
     public partial class FormEditStaff : Form
     {
         private readonly int userId;
-        private string? currentImagePath;
+        private string? _currentImagePath;
+
+        // ✅ FIXED: Expose controls and image path as public properties
+        //           so StaffFormRefactored can read them after ShowDialog().
+        public string CurrentImagePath => _currentImagePath ?? string.Empty;
+        public string StaffNameValue => txtStaff.Text.Trim();
+        public string RoleValue => cbRole.Text;
+        public string StatusValue => cbStatus.Text;
 
         public FormEditStaff(int userId, string name, string role, string status, string? imagePath)
         {
@@ -20,7 +22,7 @@ namespace OOAD_Project
             txtStaff.Text = name;
             cbRole.Text = role;
             cbStatus.Text = status;
-            currentImagePath = imagePath;
+            _currentImagePath = imagePath;
 
             LoadImage(imagePath);
         }
@@ -60,46 +62,32 @@ namespace OOAD_Project
                 {
                     string selectedPath = ofd.FileName;
 
-                    // Load image without locking file
                     using (var fs = new FileStream(selectedPath, FileMode.Open, FileAccess.Read))
-                    {
                         pbImage.Image = Image.FromStream(fs);
-                    }
 
                     string resourcesFolder = Path.Combine(Application.StartupPath, "Resources");
-                    if (!Directory.Exists(resourcesFolder))
-                        Directory.CreateDirectory(resourcesFolder);
+                    Directory.CreateDirectory(resourcesFolder);
 
-                    string originalFileName = Path.GetFileName(selectedPath);
-                    string destPath = Path.Combine(resourcesFolder, originalFileName);
-
-                    // 🟢 Create a unique filename if file exists
-                    string fileNameOnly = Path.GetFileNameWithoutExtension(originalFileName);
-                    string extension = Path.GetExtension(originalFileName);
+                    string fileNameOnly = Path.GetFileNameWithoutExtension(selectedPath);
+                    string extension = Path.GetExtension(selectedPath);
+                    string destPath = Path.Combine(resourcesFolder, Path.GetFileName(selectedPath));
 
                     int counter = 1;
                     while (File.Exists(destPath))
                     {
-                        string newFileName = $"{fileNameOnly}_{counter}{extension}";
-                        destPath = Path.Combine(resourcesFolder, newFileName);
+                        destPath = Path.Combine(resourcesFolder, $"{fileNameOnly}_{counter}{extension}");
                         counter++;
                     }
 
-                    // 🟢 Copy safely (no overwrite, no freeze)
                     File.Copy(selectedPath, destPath, false);
-
-                    // Save the final filename to DB
-                    currentImagePath = Path.GetFileName(destPath);
+                    _currentImagePath = Path.GetFileName(destPath);
                 }
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void btnClose_Click(object sender, EventArgs e) => this.Close();
 
-        // 💾 Save Staff Info (update)
+        // 💾 Save
         private void btnSave_Click(object sender, EventArgs e)
         {
             string newName = txtStaff.Text.Trim();
@@ -113,21 +101,19 @@ namespace OOAD_Project
                 return;
             }
 
-            // ✅ Correct SQL column names
             string query = @"UPDATE users 
-                             SET name = @name, 
-                                 role = @role, 
+                             SET name   = @name, 
+                                 role   = @role, 
                                  status = @status, 
-                                 image = @image 
+                                 image  = @image 
                              WHERE id = @id";
-
             try
             {
                 Database.Execute(query,
                     new NpgsqlParameter("@name", newName),
                     new NpgsqlParameter("@role", newRole),
                     new NpgsqlParameter("@status", newStatus),
-                    new NpgsqlParameter("@image", (object?)currentImagePath ?? DBNull.Value),
+                    new NpgsqlParameter("@image", (object?)_currentImagePath ?? DBNull.Value),
                     new NpgsqlParameter("@id", userId));
 
                 MessageBox.Show("Staff information updated successfully.", "Saved",
